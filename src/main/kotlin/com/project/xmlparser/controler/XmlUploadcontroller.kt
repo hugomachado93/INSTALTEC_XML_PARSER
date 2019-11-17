@@ -122,9 +122,9 @@ val listaParam = listOf(
 class XmlUploadcontroller(@Autowired val factoryXmlParser: FactoryXmlPaser) {
 
     @PostMapping("/upload")
-    fun uploadXmlFile(@RequestParam("file") files: Array<MultipartFile>): ResponseEntity<Any> {
+    fun uploadXmlFile(@RequestParam("file") files: Array<MultipartFile>, @RequestParam("type") type: String): ResponseEntity<Any> {
         val time = measureTimeMillis {
-            val xmlParserService = factoryXmlParser.getXmlParser("danfe")
+            val xmlParserService = factoryXmlParser.getXmlParser(type)
             xmlParserService.deserializeXml(listaParam, files)
         }
         println(TimeUnit.MILLISECONDS.toSeconds(time))

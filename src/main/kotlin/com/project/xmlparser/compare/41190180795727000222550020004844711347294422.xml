@@ -1,0 +1,199 @@
+<nfeProc versao="4.00" xmlns="http://www.portalfiscal.inf.br/nfe">
+    <NFe xmlns="http://www.portalfiscal.inf.br/nfe">
+        <infNFe Id="NFe41190180795727000222550020004844711347294422" versao="4.00">
+            <ide>
+                <cUF>41</cUF>
+                <cNF>34729442</cNF>
+                <natOp>REMESSA P/ARMAZENAGEM</natOp>
+                <mod>55</mod>
+                <serie>2</serie>
+                <nNF>484471</nNF>
+                <dhEmi>2019-01-01T19:04:13-02:00</dhEmi>
+                <dhSaiEnt>2019-01-01T19:04:13-02:00</dhSaiEnt>
+                <tpNF>1</tpNF>
+                <idDest>1</idDest>
+                <cMunFG>4101804</cMunFG>
+                <tpImp>2</tpImp>
+                <tpEmis>1</tpEmis>
+                <cDV>2</cDV>
+                <tpAmb>1</tpAmb>
+                <finNFe>1</finNFe>
+                <indFinal>0</indFinal>
+                <indPres>3</indPres>
+                <procEmi>0</procEmi>
+                <verProc>Sign@ture 3.0</verProc>
+            </ide>
+            <emit>
+                <CNPJ>80795727000222</CNPJ>
+                <xNome>POTENCIAL PETROLEO LTDA</xNome>
+                <enderEmit>
+                    <xLgr>RUA DR. ELI VOLPATO</xLgr>
+                    <nro>948</nro>
+                    <xBairro>CHAPADA</xBairro>
+                    <cMun>4101804</cMun>
+                    <xMun>ARAUCARIA</xMun>
+                    <UF>PR</UF>
+                    <CEP>83707746</CEP>
+                    <cPais>1058</cPais>
+                    <xPais>BRASIL</xPais>
+                    <fone>4121041850</fone>
+                </enderEmit>
+                <IE>9011816670</IE>
+                <IEST>9012777962</IEST>
+                <CRT>3</CRT>
+            </emit>
+            <dest>
+                <CNPJ>00711620000139</CNPJ>
+                <xNome>SADIPE - SERV. AUXILIARES DE DISTRIBUICAO DE PETROLEO LTDA</xNome>
+                <enderDest>
+                    <xLgr>RUA DR. ELI VOLPATO</xLgr>
+                    <nro>948</nro>
+                    <xBairro>CHAPADA</xBairro>
+                    <cMun>4101804</cMun>
+                    <xMun>ARAUCARIA</xMun>
+                    <UF>PR</UF>
+                    <CEP>83707720</CEP>
+                    <cPais>1058</cPais>
+                    <xPais>BRASIL</xPais>
+                    <fone>4136431138</fone>
+                </enderDest>
+                <indIEDest>1</indIEDest>
+                <IE>9032100101</IE>
+                <email>raul@sadipe.com.br</email>
+            </dest>
+            <entrega>
+                <CNPJ>00711620000139</CNPJ>
+                <xLgr>RUA DR. ELI VOLPATO</xLgr>
+                <nro>SNR</nro>
+                <xBairro>CHAPADA</xBairro>
+                <cMun>4101804</cMun>
+                <xMun>ARAUCARIA</xMun>
+                <UF>PR</UF>
+            </entrega>
+            <det nItem="1">
+                <prod>
+                    <cProd>102002003000005</cProd>
+                    <cEAN>SEM GTIN</cEAN>
+                    <xProd>GASOLINA A - CL.3 - ONU 1203</xProd>
+                    <NCM>27101259</NCM>
+                    <CEST>0600200</CEST>
+                    <indEscala>S</indEscala>
+                    <CFOP>5663</CFOP>
+                    <uCom>LT</uCom>
+                    <qCom>446806.000</qCom>
+                    <vUnCom>4.80000</vUnCom>
+                    <vProd>2144668.80</vProd>
+                    <cEANTrib>SEM GTIN</cEANTrib>
+                    <uTrib>LT</uTrib>
+                    <qTrib>446806.000</qTrib>
+                    <vUnTrib>4.80000</vUnTrib>
+                    <indTot>1</indTot>
+                    <comb>
+                        <cProdANP>320101001</cProdANP>
+                        <descANP>GASOLINA A COMUM</descANP>
+                        <UFCons>PR</UFCons>
+                    </comb>
+                </prod>
+                <imposto>
+                    <ICMS>
+                        <ICMS40>
+                            <orig>0</orig>
+                            <CST>50</CST>
+                        </ICMS40>
+                    </ICMS>
+                    <PIS>
+                        <PISNT>
+                            <CST>07</CST>
+                        </PISNT>
+                    </PIS>
+                    <COFINS>
+                        <COFINSNT>
+                            <CST>07</CST>
+                        </COFINSNT>
+                    </COFINS>
+                </imposto>
+            </det>
+            <total>
+                <ICMSTot>
+                    <vBC>0.00</vBC>
+                    <vICMS>0</vICMS>
+                    <vICMSDeson>0.00</vICMSDeson>
+                    <vFCP>0</vFCP>
+                    <vBCST>0.00</vBCST>
+                    <vST>0.00</vST>
+                    <vFCPST>0</vFCPST>
+                    <vFCPSTRet>0</vFCPSTRet>
+                    <vProd>2144668.80</vProd>
+                    <vFrete>0.00</vFrete>
+                    <vSeg>0.00</vSeg>
+                    <vDesc>0.00</vDesc>
+                    <vII>0</vII>
+                    <vIPI>0.00</vIPI>
+                    <vIPIDevol>0</vIPIDevol>
+                    <vPIS>0.00</vPIS>
+                    <vCOFINS>0.00</vCOFINS>
+                    <vOutro>0.00</vOutro>
+                    <vNF>2144668.80</vNF>
+                </ICMSTot>
+            </total>
+            <transp>
+                <modFrete>9</modFrete>
+                <vol>
+                    <qVol>446806</qVol>
+                    <esp>LITROS</esp>
+                    <marca>POTENCIAL</marca>
+                    <nVol>0</nVol>
+                    <pesoL>0.000</pesoL>
+                    <pesoB>0.000</pesoB>
+                </vol>
+            </transp>
+            <pag>
+                <detPag>
+                    <tPag>90</tPag>
+                    <vPag>0.00</vPag>
+                </detPag>
+            </pag>
+            <infAdic>
+                <infCpl>||||||||||ICMS SUSPENSO CONFORME ARTIGO 93 IX. DECRETO 1980/2007. NOVO RICMS PR. N.F.: 216575.
+                    PETROBRAS. O.C.: 221881.||FORMA DE COBRANCA :
+                </infCpl>
+            </infAdic>
+        </infNFe>
+        <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+            <SignedInfo>
+                <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+                <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+                <Reference URI="#NFe41190180795727000222550020004844711347294422">
+                    <Transforms>
+                        <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+                        <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+                    </Transforms>
+                    <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+                    <DigestValue>mQ3YXxQvJ9mXSozsDTGMTZAWqZA=</DigestValue>
+                </Reference>
+            </SignedInfo>
+            <SignatureValue>
+                HEQ++TOJ+JS/ZQY+rDVm0PAKNkzjZwpSMFm1ZN/+6gdcz1RbniDGvmrdawDIFgfokGZ/kMbKxCuAKiEf+R6KwYQL8wO51F1LeATniF6Ovhd0d0z4KT8UExyXw+w7Ps3lKh/paYUCbHMzhY+36MQJnz4IV/dz7WDgzwhe8kdBkILMJmGVtekvGFXwOUbJqIilk7cThIFTHJ+Z7XxIQqnU3g9XnyZSiPz4sV+NLAa7H39T4+ZeEklv8d0oKTjUBAjHv5cxMMTSBrzj27IqxK7QHn9N75aalwE8hvQwr9sGBPfqDoYAHaSHa/0HWydR5ewt0qJn+oNPhsU+lp0REWoInA==
+            </SignatureValue>
+            <KeyInfo>
+                <X509Data>
+                    <X509Certificate>
+                        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
+                    </X509Certificate>
+                </X509Data>
+            </KeyInfo>
+        </Signature>
+    </NFe>
+    <protNFe versao="4.00">
+        <infProt Id="ID141190000524016">
+            <tpAmb>1</tpAmb>
+            <verAplic>PR-v4_3_3</verAplic>
+            <chNFe>41190180795727000222550020004844711347294422</chNFe>
+            <dhRecbto>2019-01-02T19:17:28-02:00</dhRecbto>
+            <nProt>141190000524016</nProt>
+            <digVal>mQ3YXxQvJ9mXSozsDTGMTZAWqZA=</digVal>
+            <cStat>100</cStat>
+            <xMotivo>Autorizado o uso da NF-e</xMotivo>
+        </infProt>
+    </protNFe>
+</nfeProc>
