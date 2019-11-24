@@ -2,6 +2,7 @@ package com.project.xmlparser.controler
 
 import com.project.xmlparser.services.FactoryXmlPaser
 import com.project.xmlparser.services.XmlParserInterface
+import com.project.xmlparser.services.XmlParserInvoice
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -119,13 +120,12 @@ val listaParam = listOf(
 )
 
 @RestController("/v1")
-class XmlUploadcontroller(@Autowired val factoryXmlParser: FactoryXmlPaser) {
+class XmlUploadcontroller(@Autowired val xmlParserInvoice: XmlParserInvoice) {
 
     @PostMapping("/upload")
     fun uploadXmlFile(@RequestParam("file") files: Array<MultipartFile>, @RequestParam("type") type: String): ResponseEntity<Any> {
         val time = measureTimeMillis {
-            val xmlParserService = factoryXmlParser.getXmlParser(type)
-            xmlParserService.deserializeXml(listaParam, files)
+            xmlParserInvoice.createDocument(listaParam, files)
         }
         println(TimeUnit.MILLISECONDS.toSeconds(time))
         return ResponseEntity.ok().build()

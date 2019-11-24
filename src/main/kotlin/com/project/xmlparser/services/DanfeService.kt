@@ -13,10 +13,10 @@ import org.apache.poi.ss.usermodel.FillPatternType
 import org.apache.poi.ss.usermodel.IndexedColors
 import org.springframework.stereotype.Service
 import org.apache.poi.ss.usermodel.CellStyle
+import org.springframework.stereotype.Component
 
 
-
-@Service
+@Component
 class DanfeService : XmlParserInterface {
 
         private val mapper = XmlMapper().registerModule(KotlinModule()).configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
