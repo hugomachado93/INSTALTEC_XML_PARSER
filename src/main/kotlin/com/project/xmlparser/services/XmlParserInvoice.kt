@@ -2,7 +2,6 @@ package com.project.xmlparser.services
 
 import com.google.auth.Credentials
 import com.google.auth.oauth2.GoogleCredentials
-import com.google.cloud.storage.BucketInfo
 import com.google.cloud.storage.StorageOptions
 import com.project.xmlparser.entity.BlobEntity
 import com.project.xmlparser.handlers.InvoiceHandler
@@ -15,8 +14,8 @@ import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import org.xml.sax.helpers.DefaultHandler
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.io.FileInputStream
-import java.io.FileOutputStream
 import javax.xml.parsers.SAXParserFactory
 
 
@@ -74,11 +73,7 @@ class XmlParserInvoice(@Autowired val invoiceHandler: InvoiceHandler, @Autowired
         workbook.write(byteArrayOutputStream)
         workbook.close()
 
-        val credentials: Credentials = GoogleCredentials
-                .fromStream(FileInputStream("/home/vabows/Documents/INSTALTEC-9ed09bc58230.json"))
-
-        val storage = StorageOptions.newBuilder().setCredentials(credentials)
-                .setProjectId("instaltec").build().service
+        val storage = StorageOptions.getDefaultInstance().service
 
         val bucket = storage.get("instaltec_store")
 
