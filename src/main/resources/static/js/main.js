@@ -10,10 +10,13 @@ function uploadMultipleFiles(files) {
     var formData = new FormData();
     for(var index = 0; index < files.length; index++) {
         formData.append("files", files[index]);
+        formData.append("type", "qulaquer");
     }
 
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/uploadMultipleFiles");
+    xhr.open("POST", "/upload");
+
+    xhr.send(formData);
 
     xhr.onload = function() {
         var a = document.createElement("a");
@@ -25,8 +28,6 @@ function uploadMultipleFiles(files) {
         a.click();
         window.URL.revokeObjectURL(url);
     }
-
-    xhr.send(formData);
 
 
 }
