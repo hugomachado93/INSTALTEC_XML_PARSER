@@ -138,6 +138,7 @@ class XmlUploadcontroller(@Autowired val xmlParserInvoice: XmlParserInvoice) {
         val time = measureTimeMillis {
             blobid = xmlParserInvoice.createDocument(listaParam, files)
         }
+
         println(TimeUnit.MILLISECONDS.toSeconds(time))
 
         val uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/upload/").path("$blobid").toUriString()

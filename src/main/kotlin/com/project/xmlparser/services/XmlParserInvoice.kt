@@ -6,6 +6,7 @@ import com.google.cloud.storage.StorageOptions
 import com.project.xmlparser.entity.BlobEntity
 import com.project.xmlparser.handlers.InvoiceHandler
 import com.project.xmlparser.repository.CloudStorage.BlodRepository
+import com.project.xmlparser.repository.CloudStorage.CloudStorage
 import org.apache.poi.ss.usermodel.FillPatternType
 import org.apache.poi.ss.usermodel.IndexedColors
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
@@ -20,7 +21,7 @@ import javax.xml.parsers.SAXParserFactory
 
 
 @Service
-class XmlParserInvoice(@Autowired val invoiceHandler: InvoiceHandler, @Autowired val blobRepository: BlodRepository) : DefaultHandler() {
+class XmlParserInvoice(@Autowired val invoiceHandler: InvoiceHandler, @Autowired val cloudStorage: CloudStorage) : DefaultHandler() {
 
     fun createDocument(lista: List<String>, files: Array<MultipartFile>) : Int? {
 
@@ -73,17 +74,9 @@ class XmlParserInvoice(@Autowired val invoiceHandler: InvoiceHandler, @Autowired
         workbook.write(byteArrayOutputStream)
         workbook.close()
 
-        val storage = StorageOptions.getDefaultInstance().service
+        val blobid = cloudStorage.saveToDownload(byteArrayOutputStream.toByteArray())
 
-        val bucket = storage.get("instaltec_store")
-
-        val blob = bucket.create("temp.xlsx", byteArrayOutputStream.toByteArray())
-
-        val blobEntity = BlobEntity(null, blob.blobId.bucket, blob.blobId.name, blob.blobId.generation)
-
-        val blobdb = blobRepository.save(blobEntity)
-
-        return blobdb.id
+        return blobid
 
     }
 
