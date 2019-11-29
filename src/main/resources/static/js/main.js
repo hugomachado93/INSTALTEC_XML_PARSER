@@ -22,7 +22,6 @@ function uploadMultipleFiles(files) {
 
         var url = "https://storage.cloud.google.com/instaltec_store/temp.xlsx?authuser=0";
         a.href = url;
-        a.download = fileName;
         a.click();
         window.URL.revokeObjectURL(url);
     }
