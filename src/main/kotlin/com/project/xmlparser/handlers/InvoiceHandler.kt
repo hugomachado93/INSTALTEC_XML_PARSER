@@ -9,10 +9,11 @@ class InvoiceHandler : DefaultHandler() {
 
     private var currentName: String? = null
     private var map = mutableMapOf<String?, String>()
-    private var start = false
+    private var prodName = false
     private var newName = false
     private var value = ""
     private var uniqueValue = mutableListOf<String?>()
+    private var uniqueProdValues = mutableListOf<String?>()
     private var count = 0
 
     override fun startElement(uri: String?, localName: String?, qName: String?, atribute: Attributes?) {
@@ -30,18 +31,20 @@ class InvoiceHandler : DefaultHandler() {
             "transportadora" -> value = "transportadora"
             "veicTransp" -> value = "veicTransp"
             "vol" -> value = "vol"
-
+            "cobr" -> value = "cobr"
+            "pag" -> value = "pag"
+            "protNFe" -> value = "protNfe"
         }
 
         if(atribute?.getQName(0) == "nItem") {
             value = atribute.getValue(0)
-            start = true
+            prodName = true
         }
 
         currentName = "$value$qName"
 
-        if(start) {
-            currentName = "$qName$value"
+        if(prodName) {
+            currentName = "prod$qName|$value"
         }
 
     }
@@ -51,7 +54,12 @@ class InvoiceHandler : DefaultHandler() {
         val string = String(ch, start, length)
 
         string.takeIf { it.isNotEmpty() }?.let { map[currentName] = it }
-        uniqueValue.add(currentName)
+
+        if(prodName) {
+            uniqueProdValues.add(currentName)
+        } else {
+            uniqueValue.add(currentName)
+        }
     }
 
     override fun endElement(uri: String?, localName: String?, qName: String?) {
@@ -59,7 +67,7 @@ class InvoiceHandler : DefaultHandler() {
         when(qName){
             "det" -> {
                 value = ""
-                start = false
+                prodName = false
             }
         }
 
@@ -74,10 +82,14 @@ class InvoiceHandler : DefaultHandler() {
     }
 
     fun getUniqueValues() : List<String?> {
-        return uniqueValue.distinct()
+
+        val uniqueValues = uniqueProdValues.distinct().sortedBy { it?.substringAfter("|") }
+
+        return uniqueValue.distinct() + uniqueValues
     }
 
     fun clearUniqueValues() {
+        uniqueProdValues.clear()
         uniqueValue.clear()
     }
 

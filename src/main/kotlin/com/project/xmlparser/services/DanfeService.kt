@@ -16,6 +16,7 @@ import org.apache.poi.ss.usermodel.CellStyle
 import org.springframework.stereotype.Component
 
 
+//Not used anymore
 @Component
 class DanfeService : XmlParserInterface {
 

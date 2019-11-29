@@ -1,26 +1,29 @@
 package com.project.xmlparser.services
 
+import com.google.auth.Credentials
+import com.google.auth.oauth2.GoogleCredentials
+import com.google.cloud.storage.BucketInfo
+import com.google.cloud.storage.StorageOptions
+import com.project.xmlparser.entity.BlobEntity
 import com.project.xmlparser.handlers.InvoiceHandler
+import com.project.xmlparser.repository.CloudStorage.BlodRepository
 import org.apache.poi.ss.usermodel.FillPatternType
 import org.apache.poi.ss.usermodel.IndexedColors
-import org.apache.poi.xssf.usermodel.XSSFRow
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
-import org.xml.sax.Attributes
 import org.xml.sax.helpers.DefaultHandler
+import java.io.ByteArrayOutputStream
+import java.io.FileInputStream
 import java.io.FileOutputStream
 import javax.xml.parsers.SAXParserFactory
 
 
-
 @Service
-class XmlParserInvoice(@Autowired val invoiceHandler: InvoiceHandler) : DefaultHandler() {
+class XmlParserInvoice(@Autowired val invoiceHandler: InvoiceHandler, @Autowired val blobRepository: BlodRepository) : DefaultHandler() {
 
-    private var canFind = false
-
-    fun createDocument(lista: List<String>, files: Array<MultipartFile>){
+    fun createDocument(lista: List<String>, files: Array<MultipartFile>) : Int? {
 
         val factory = SAXParserFactory.newInstance()
         factory.isNamespaceAware = true
@@ -67,10 +70,25 @@ class XmlParserInvoice(@Autowired val invoiceHandler: InvoiceHandler) : DefaultH
 
         }
 
-        val fileStream = FileOutputStream("/home/vabows/Documents/temp.xlsx")
-        workbook.write(fileStream)
-        fileStream.close()
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        workbook.write(byteArrayOutputStream)
         workbook.close()
+
+        val credentials: Credentials = GoogleCredentials
+                .fromStream(FileInputStream("/home/vabows/Documents/INSTALTEC-9ed09bc58230.json"))
+
+        val storage = StorageOptions.newBuilder().setCredentials(credentials)
+                .setProjectId("instaltec").build().service
+
+        val bucket = storage.get("instaltec_store")
+
+        val blob = bucket.create("temp.xlsx", byteArrayOutputStream.toByteArray())
+
+        val blobEntity = BlobEntity(null, blob.blobId.bucket, blob.blobId.name, blob.blobId.generation)
+
+        val blobdb = blobRepository.save(blobEntity)
+
+        return blobdb.id
 
     }
 
