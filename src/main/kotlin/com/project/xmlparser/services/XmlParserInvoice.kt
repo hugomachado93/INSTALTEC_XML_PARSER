@@ -23,7 +23,7 @@ import javax.xml.parsers.SAXParserFactory
 @Service
 class XmlParserInvoice(@Autowired val invoiceHandler: InvoiceHandler, @Autowired val cloudStorage: CloudStorage) : DefaultHandler() {
 
-    fun createDocument(lista: List<String>, files: Array<MultipartFile>) : Int? {
+    fun createDocument(lista: List<String>, files: Array<MultipartFile>) : String {
 
         val factory = SAXParserFactory.newInstance()
         factory.isNamespaceAware = true

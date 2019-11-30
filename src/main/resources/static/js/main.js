@@ -15,21 +15,27 @@ function uploadMultipleFiles(files) {
 
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "/upload");
-
     xhr.send(formData);
+
+    var response
+
+    xhr.onreadystatechange = function () {
+        if (xhr.status === 200)  {
+            console.log(xhr.responseText);
+            response = JSON.parse(xhr.responseText);
+        }
+    }
 
     xhr.onload = function() {
         var a = document.createElement("a");
         document.body.appendChild(a);
         a.style = "display: none";
 
-        var url = "https://storage.googleapis.com/instaltec_store/temp.xlsx";
+        var url = "https://storage.googleapis.com/instaltec_store/" + response.fileName;
         a.href = url;
         a.click();
         window.URL.revokeObjectURL(url);
     }
-
-
 }
 
 multipleUploadForm.addEventListener('submit', function(event){

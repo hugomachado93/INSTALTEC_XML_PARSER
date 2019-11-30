@@ -133,7 +133,7 @@ class XmlUploadcontroller(@Autowired val xmlParserInvoice: XmlParserInvoice) {
     @CrossOrigin(origins = ["http://localhost:8081"])
     @PostMapping("/upload")
     fun uploadXmlFile(@RequestParam("files") files: Array<MultipartFile>, @RequestParam("type") type: String): ResponseEntity<Any> {
-        var blobid : Int? = null
+        var blobid : String? = null
 
         val time = measureTimeMillis {
             blobid = xmlParserInvoice.createDocument(listaParam, files)
@@ -143,7 +143,7 @@ class XmlUploadcontroller(@Autowired val xmlParserInvoice: XmlParserInvoice) {
 
         val uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/upload/").path("$blobid").toUriString()
 
-        val fileResponse = UploadFileResponse("temp.xlsx", uri)
+        val fileResponse = UploadFileResponse(blobid!!, uri)
 
         return ResponseEntity.status(HttpStatus.OK).body(fileResponse)
     }
