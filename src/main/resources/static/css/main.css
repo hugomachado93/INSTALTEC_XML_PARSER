@@ -129,3 +129,14 @@ input[type="file"] {
     overflow-x: hidden;
     word-break: break-all;
 }
+
+#fader {
+    opacity: 0.5;
+    background: black;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: none;
+}

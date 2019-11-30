@@ -23,7 +23,7 @@ function uploadMultipleFiles(files) {
         document.body.appendChild(a);
         a.style = "display: none";
 
-        var url = "https://storage.cloud.google.com/instaltec_store/temp.xlsx?authuser=0";
+        var url = "https://storage.googleapis.com/instaltec_store/temp.xlsx";
         a.href = url;
         a.click();
         window.URL.revokeObjectURL(url);
