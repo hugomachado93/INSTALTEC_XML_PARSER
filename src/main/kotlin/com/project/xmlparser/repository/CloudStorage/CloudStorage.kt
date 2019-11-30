@@ -20,7 +20,7 @@ class CloudStorage(@Autowired val blobRepository: BlodRepository) {
 
         val blob = bucket.create("temp.xlsx", byteArray)
 
-        blob.createAcl(Acl.of(Acl.User.ofAllUsers(), Acl.Role.READER))
+        blob.updateAcl(Acl.of(Acl.User.ofAllUsers(), Acl.Role.READER))
 
         val blobEntity = BlobEntity(null, blob.blobId.bucket, blob.blobId.name, blob.blobId.generation)
 
