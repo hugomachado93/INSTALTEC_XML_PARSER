@@ -1,15 +1,14 @@
-package com.project.xmlparser.repository.CloudStorage
+package com.project.xmlparser.repository.storage
 
 import com.google.cloud.storage.*
 import com.project.xmlparser.entity.BlobEntity
+import com.project.xmlparser.repository.BlodRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
-import java.nio.ByteBuffer
-import java.nio.channels.WritableByteChannel
+import java.util.*
 
 @Service
-class CloudStorage(@Autowired val blobRepository: BlodRepository) {
+class CloudStorage {
 
     fun saveToDownload(byteArray: ByteArray): String {
 
@@ -17,13 +16,9 @@ class CloudStorage(@Autowired val blobRepository: BlodRepository) {
 
         val bucket = storage.get("instaltec_store")
 
-        val name = System.currentTimeMillis()
+        val name = UUID.randomUUID()
 
         val blob = bucket.create("$name.xlsx", byteArray)
-
-        val blobEntity = BlobEntity(null, blob.blobId.bucket, blob.blobId.name, blob.blobId.generation)
-
-        val blobdb = blobRepository.save(blobEntity)
 
         return blob.blobId.name
     }

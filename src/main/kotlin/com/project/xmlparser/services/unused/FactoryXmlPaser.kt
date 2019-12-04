@@ -1,4 +1,4 @@
-package com.project.xmlparser.services
+package com.project.xmlparser.services.unused
 
 import com.project.xmlparser.exception.ServiceNotFoundException
 import org.springframework.beans.factory.annotation.Autowired

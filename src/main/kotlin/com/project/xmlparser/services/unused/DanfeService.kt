@@ -1,18 +1,14 @@
-package com.project.xmlparser.services
+package com.project.xmlparser.services.unused
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
-import com.project.xmlparser.entity.Det
-import com.project.xmlparser.entity.NfeProc
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.springframework.web.multipart.MultipartFile
 import java.io.FileOutputStream
 import org.apache.poi.ss.usermodel.FillPatternType
 import org.apache.poi.ss.usermodel.IndexedColors
-import org.springframework.stereotype.Service
-import org.apache.poi.ss.usermodel.CellStyle
 import org.springframework.stereotype.Component
 
 

@@ -1,4 +1,4 @@
-package com.project.xmlparser.repository.CloudStorage
+package com.project.xmlparser.repository
 
 import com.project.xmlparser.entity.BlobEntity
 import org.springframework.data.jpa.repository.JpaRepository

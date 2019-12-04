@@ -10,11 +10,9 @@ class InvoiceHandler : DefaultHandler() {
     private var currentName: String? = null
     private var map = mutableMapOf<String?, String>()
     private var prodName = false
-    private var newName = false
     private var value = ""
     private var uniqueValue = mutableListOf<String?>()
     private var uniqueProdValues = mutableListOf<String?>()
-    private var count = 0
 
     override fun startElement(uri: String?, localName: String?, qName: String?, atribute: Attributes?) {
 
@@ -83,7 +81,7 @@ class InvoiceHandler : DefaultHandler() {
 
     fun getUniqueValues() : List<String?> {
 
-        val uniqueValues = uniqueProdValues.distinct().sortedBy { it?.substringAfter("|") }
+        val uniqueValues = uniqueProdValues.distinct().sortedBy { it?.substringAfter("|")?.toInt() }
 
         return uniqueValue.distinct() + uniqueValues
     }

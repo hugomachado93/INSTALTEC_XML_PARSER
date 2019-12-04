@@ -1,22 +1,16 @@
 package com.project.xmlparser.services
 
-import com.google.auth.Credentials
-import com.google.auth.oauth2.GoogleCredentials
-import com.google.cloud.storage.StorageOptions
-import com.project.xmlparser.entity.BlobEntity
 import com.project.xmlparser.handlers.InvoiceHandler
-import com.project.xmlparser.repository.CloudStorage.BlodRepository
-import com.project.xmlparser.repository.CloudStorage.CloudStorage
+import com.project.xmlparser.repository.storage.CloudStorage
 import org.apache.poi.ss.usermodel.FillPatternType
 import org.apache.poi.ss.usermodel.IndexedColors
+import org.apache.poi.ss.util.CellRangeAddress
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import org.xml.sax.helpers.DefaultHandler
 import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileInputStream
 import javax.xml.parsers.SAXParserFactory
 
 
@@ -70,13 +64,12 @@ class XmlParserInvoice(@Autowired val invoiceHandler: InvoiceHandler, @Autowired
 
         }
 
+        sheet.setAutoFilter(CellRangeAddress(sheet.firstRowNum, sheet.lastRowNum, 0, sheet.getRow(0).physicalNumberOfCells))
         val byteArrayOutputStream = ByteArrayOutputStream()
         workbook.write(byteArrayOutputStream)
         workbook.close()
 
-        val blobid = cloudStorage.saveToDownload(byteArrayOutputStream.toByteArray())
-
-        return blobid
+        return cloudStorage.saveToDownload(byteArrayOutputStream.toByteArray())
 
     }
 

@@ -1,8 +1,6 @@
-package com.project.xmlparser.entity
+package com.project.xmlparser.services.unused
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 import java.util.ArrayList
 
@@ -13,10 +11,10 @@ class NfeProc (
 
     // Setter Methods 
 
-    var nFe: NFe? = null,
-    var protNFe: ProtNFe?,
-    var _xmlns: String? = null,
-    var _versao: String? = null
+        var nFe: NFe? = null,
+        var protNFe: ProtNFe?,
+        var _xmlns: String? = null,
+        var _versao: String? = null
 )
 
 class ProtNFe (
@@ -24,8 +22,8 @@ class ProtNFe (
 
     // Setter Methods 
 
-    var infProt: InfProt?,
-    var _versao: String? = null
+        var infProt: InfProt?,
+        var _versao: String? = null
 )
 
 class InfProt (
@@ -49,9 +47,9 @@ class NFe (
 
     // Setter Methods 
 
-    var infNFe: InfNFe? = null,
-    var signature: Signature?,
-    var _xmlns: String? = null
+        var infNFe: InfNFe? = null,
+        var signature: Signature?,
+        var _xmlns: String? = null
 )
 
 class Signature (
@@ -59,10 +57,10 @@ class Signature (
 
     // Setter Methods 
 
-    var signedInfo: SignedInfo?,
-    var signatureValue: String? = null,
-    var keyInfo: KeyInfo?,
-    var _xmlns: String? = null
+        var signedInfo: SignedInfo?,
+        var signatureValue: String? = null,
+        var keyInfo: KeyInfo?,
+        var _xmlns: String? = null
 )
 
 class KeyInfo (
@@ -86,9 +84,9 @@ class SignedInfo (
 
     // Setter Methods 
 
-    var canonicalizationMethod: CanonicalizationMethod?,
-    var signatureMethod: SignatureMethod?,
-    var reference: Reference?
+        var canonicalizationMethod: CanonicalizationMethod?,
+        var signatureMethod: SignatureMethod?,
+        var reference: Reference?
 )
 
 class Reference (
@@ -97,9 +95,9 @@ class Reference (
     // Setter Methods 
 
 //    var transforms: Transforms,
-    var digestMethod: DigestMethod?,
-    var digestValue: String? = null,
-    var _URI: String? = null
+        var digestMethod: DigestMethod?,
+        var digestValue: String? = null,
+        var _URI: String? = null
 )
 
 class DigestMethod (
@@ -143,18 +141,18 @@ class InfNFe (
 
     // Setter Methods 
 
-    var ide: Ide?,
-    var emit: Emit?,
-    var dest: Dest?,
-    var entrega: Entrega?,
-    @JacksonXmlElementWrapper(useWrapping = false)
+        var ide: Ide?,
+        var emit: Emit?,
+        var dest: Dest?,
+        var entrega: Entrega?,
+        @JacksonXmlElementWrapper(useWrapping = false)
     var det: ArrayList<Det?>,
-    var total: Total?,
-    var transp: Transp?,
-    var pag: Pag?,
-    var infAdic: InfAdic?,
-    var _Id: String? = null,
-    var _versao: String? = null
+        var total: Total?,
+        var transp: Transp?,
+        var pag: Pag?,
+        var infAdic: InfAdic?,
+        var _Id: String? = null,
+        var _versao: String? = null
 )
 
 class InfAdic (
@@ -243,10 +241,10 @@ class Det (
 
     // Setter Methods 
 
-    var prod: Prod?,
-    var imposto: Imposto?,
-    var infAdProd: String? = null,
-    var _nItem: String? = null
+        var prod: Prod?,
+        var imposto: Imposto?,
+        var infAdProd: String? = null,
+        var _nItem: String? = null
 )
 
 class Imposto (
@@ -254,9 +252,9 @@ class Imposto (
 
     // Setter Methods 
 
-    var icms: ICMS?,
-    var pis: PIS?,
-    var cofins: COFINS?
+        var icms: ICMS?,
+        var pis: PIS?,
+        var cofins: COFINS?
 )
 
 class COFINS (
@@ -361,12 +359,12 @@ class Dest (
 
     // Setter Methods 
 
-    var cnpj: String? = null,
-    var xNome: String? = null,
-    var enderDest: EnderDest?,
-    var indIEDest: String? = null,
-    var ie: String? = null,
-    var email: String? = null
+        var cnpj: String? = null,
+        var xNome: String? = null,
+        var enderDest: EnderDest?,
+        var indIEDest: String? = null,
+        var ie: String? = null,
+        var email: String? = null
 )
 
 class EnderDest (
@@ -391,12 +389,12 @@ class Emit (
 
     // Setter Methods 
 
-    var cnpj: String? = null,
-    var xNome: String? = null,
-    var enderEmit: EnderEmit?,
-    var ie: String? = null,
-    var iest: String? = null,
-    var crt: String? = null
+        var cnpj: String? = null,
+        var xNome: String? = null,
+        var enderEmit: EnderEmit?,
+        var ie: String? = null,
+        var iest: String? = null,
+        var crt: String? = null
 )
 
 class EnderEmit (
