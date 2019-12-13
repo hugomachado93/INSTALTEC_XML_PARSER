@@ -16,6 +16,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
+import java.net.URL
 import java.util.concurrent.TimeUnit
 import javax.servlet.http.HttpServletRequest
 import kotlin.system.measureTimeMillis
@@ -133,17 +134,15 @@ class XmlUploadcontroller(@Autowired val xmlParserInvoice: XmlParserInvoice) {
     @CrossOrigin(origins = ["http://localhost:8081"])
     @PostMapping("/upload")
     fun uploadXmlFile(@RequestParam("files") files: Array<MultipartFile>, @RequestParam("type") type: String): ResponseEntity<Any> {
-        var blobid : String? = null
+        var url : URL? = null
 
         val time = measureTimeMillis {
-            blobid = xmlParserInvoice.createDocument(listaParam, files)
+            url = xmlParserInvoice.createDocument(listaParam, files)
         }
 
         println(TimeUnit.MILLISECONDS.toSeconds(time))
 
-        val uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/upload/").path("$blobid").toUriString()
-
-        val fileResponse = UploadFileResponse(blobid!!, uri)
+        val fileResponse = UploadFileResponse(url!!)
 
         return ResponseEntity.status(HttpStatus.OK).body(fileResponse)
     }

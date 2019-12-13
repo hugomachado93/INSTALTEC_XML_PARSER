@@ -1,4 +1,6 @@
 package com.project.xmlparser.entity
 
+import java.net.URL
+
 class UploadFileResponse // Getters and Setters (Omitted for brevity)
-(val fileName: String, val fileDownloadUri: String)
+(val fileDownloadUri: URL)

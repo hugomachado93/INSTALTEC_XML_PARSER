@@ -1,7 +1,6 @@
 package com.project.xmlparser.services
 
 import com.project.xmlparser.handlers.InvoiceHandler
-import com.project.xmlparser.repository.storage.CloudStorage
 import org.apache.poi.ss.usermodel.FillPatternType
 import org.apache.poi.ss.usermodel.IndexedColors
 import org.apache.poi.ss.util.CellRangeAddress
@@ -11,13 +10,14 @@ import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import org.xml.sax.helpers.DefaultHandler
 import java.io.ByteArrayOutputStream
+import java.net.URL
 import javax.xml.parsers.SAXParserFactory
 
 
 @Service
 class XmlParserInvoice(@Autowired val invoiceHandler: InvoiceHandler, @Autowired val cloudStorage: CloudStorage) : DefaultHandler() {
 
-    fun createDocument(lista: List<String>, files: Array<MultipartFile>) : String {
+    fun createDocument(lista: List<String>, files: Array<MultipartFile>) : URL {
 
         val factory = SAXParserFactory.newInstance()
         factory.isNamespaceAware = true

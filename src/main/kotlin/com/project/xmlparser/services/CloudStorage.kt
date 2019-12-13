@@ -1,16 +1,15 @@
-package com.project.xmlparser.repository.storage
+package com.project.xmlparser.services
 
 import com.google.cloud.storage.*
-import com.project.xmlparser.entity.BlobEntity
-import com.project.xmlparser.repository.BlodRepository
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.net.URL
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 @Service
 class CloudStorage {
 
-    fun saveToDownload(byteArray: ByteArray): String {
+    fun saveToDownload(byteArray: ByteArray): URL {
 
         val storage: Storage = StorageOptions.getDefaultInstance().service
 
@@ -20,7 +19,7 @@ class CloudStorage {
 
         val blob = bucket.create("$name.xlsx", byteArray)
 
-        return blob.blobId.name
+        return blob.signUrl(5, TimeUnit.MINUTES, Storage.SignUrlOption.withV4Signature())
     }
 
 }
