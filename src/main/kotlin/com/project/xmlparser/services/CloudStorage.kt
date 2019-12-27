@@ -1,6 +1,7 @@
 package com.project.xmlparser.services
 
 import com.google.cloud.storage.*
+import com.project.xmlparser.entity.UploadFileResponse
 import org.springframework.stereotype.Service
 import java.net.URL
 import java.util.*
@@ -9,7 +10,7 @@ import java.util.concurrent.TimeUnit
 @Service
 class CloudStorage {
 
-    fun saveToDownload(byteArray: ByteArray): URL {
+    fun saveToDownload(byteArray: ByteArray): UploadFileResponse {
 
         val storage: Storage = StorageOptions.getDefaultInstance().service
 
@@ -19,7 +20,10 @@ class CloudStorage {
 
         val blob = bucket.create("$name.xlsx", byteArray)
 
-        return blob.signUrl(5, TimeUnit.MINUTES, Storage.SignUrlOption.withV4Signature())
+        val url = blob.signUrl(5, TimeUnit.MINUTES, Storage.SignUrlOption.withV4Signature())
+
+        return UploadFileResponse(name.toString(), url)
+
     }
 
 }

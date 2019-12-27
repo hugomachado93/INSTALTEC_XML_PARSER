@@ -1,11 +1,14 @@
 package com.project.xmlparser.handlers
 
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import org.xml.sax.Attributes
 import org.xml.sax.helpers.DefaultHandler
 
 @Component
 class InvoiceHandler : DefaultHandler() {
+
+    val log = LoggerFactory.getLogger(InvoiceHandler::class.java)
 
     private var currentName: String? = null
     private var map = mutableMapOf<String?, String>()

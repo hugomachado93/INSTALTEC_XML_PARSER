@@ -4,6 +4,7 @@ import com.google.cloud.storage.BlobId
 import com.google.cloud.storage.Storage
 import com.project.xmlparser.entity.UploadFileResponse
 import com.project.xmlparser.services.XmlParserInvoice
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
@@ -23,126 +24,27 @@ import kotlin.system.measureTimeMillis
 
 
 val listaParam = listOf(
-        "Id",
-        "cnpj",
-        "email",
-        "ie",
-        "indIEDest",
-        "xNome",
-        "enderDest",
-        "cPais",
-        "cep",
-        "fone",
-        "nro",
-        "uf",
-        "xBairro",
-        "xLgr",
-        "xMun",
-        "xPais",
-        "nItem",
-        "imposto",
-        "cst",
-        "orig",
-        "cst",
-        "cProd",
-        "emitCnpj",
-        "crt",
-        "enderEmit",
-        "cPais",
-        "cep",
-        "fone",
-        "nro",
-        "uf",
-        "xBairro",
-        "xLgr",
-        "xMun",
-        "xPais",
-        "emitIe",
-        "iest",
-        "emitXNome",
-        "cMun",
-        "entregaCnpj",
-        "nro",
-        "uf",
-        "xBairro",
-        "xLgr",
-        "xMun",
-        "cMunFG",
-        "cdv",
-        "cnf",
-        "cuf",
-        "dhEmi",
-        "dhSaiEnt",
-        "finNFe",
-        "idDest",
-        "indFinal",
-        "indPres",
-        "mod",
-        "natOp",
-        "nnf",
-        "procEmi",
-        "serie",
-        "tpAmb",
-        "tpEmis",
-        "tpImp",
-        "tpNF",
-        "verProc",
-        "infCpl",
-        "tPag",
-        "vPag",
-        "vDesc",
-        "vFrete",
-        "vOutro",
-        "vProd",
-        "vSeg",
-        "vbc",
-        "vbcst",
-        "vcofins",
-        "vfcp",
-        "vfcpst",
-        "vfcpstRet",
-        "vicms",
-        "vicmsDeson",
-        "vii",
-        "vipi",
-        "vipiDevol",
-        "vnf",
-        "vpis",
-        "vst",
-        "modFrete",
-        "signatureValue",
-        "x509Certificate",
-        "_Algorithm",
-        "_URI",
-        "digestValue",
-        "_Algorithm",
-        "signatureMethodAlgorithm",
-        "infProtId",
-        "cStat",
-        "chNFe",
-        "dhRecbto",
-        "digVal",
-        "nProt",
-        "tpAmb",
-        "verAplic",
-        "xMotivo"
+        "all"
 )
 
 @RestController
 class XmlUploadcontroller(@Autowired val xmlParserInvoice: XmlParserInvoice) {
 
-    @CrossOrigin(origins = ["http://localhost:8081"])
+    val log = LoggerFactory.getLogger(XmlUploadcontroller::class.java)
+
     @PostMapping("/upload")
-    fun uploadXmlFile(@RequestParam("files") files: Array<MultipartFile>, @RequestParam("type") type: String): ResponseEntity<Any> {
-        var url : URL? = null
+    fun uploadXmlFile(@RequestParam("files") files: Array<MultipartFile>, @RequestParam("type") type: String): ResponseEntity<UploadFileResponse> {
+        var fileResponse : UploadFileResponse? = null
+
+        log.info("Iniciando criacao do arquivo")
 
         val time = measureTimeMillis {
-            url = xmlParserInvoice.createDocument(listaParam, files)
+            fileResponse = xmlParserInvoice.createDocument(listaParam, files)
         }
 
         println(TimeUnit.MILLISECONDS.toSeconds(time))
 
-        val fileResponse = UploadFileResponse(url!!)
+        log.info("Processo do arquivo ${fileResponse?.fileName} finalizado")
 
         return ResponseEntity.status(HttpStatus.OK).body(fileResponse)
     }
