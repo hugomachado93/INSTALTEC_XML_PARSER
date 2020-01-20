@@ -1,9 +1,8 @@
 package com.project.xmlparser.services
 
 import com.google.cloud.storage.*
-import com.project.xmlparser.entity.UploadFileResponse
+import com.project.xmlparser.dto.UploadFileResponse
 import org.springframework.stereotype.Service
-import java.net.URL
 import java.util.*
 import java.util.concurrent.TimeUnit
 

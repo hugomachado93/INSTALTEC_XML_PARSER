@@ -1,10 +1,12 @@
 package com.project.xmlparser.services
 
-import com.project.xmlparser.entity.UploadFileResponse
+import com.project.xmlparser.dto.UploadFileResponse
 import com.project.xmlparser.handlers.InvoiceHandler
 import org.apache.poi.ss.usermodel.FillPatternType
 import org.apache.poi.ss.usermodel.IndexedColors
 import org.apache.poi.ss.util.CellRangeAddress
+import org.apache.poi.xssf.usermodel.XSSFCellStyle
+import org.apache.poi.xssf.usermodel.XSSFSheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -12,7 +14,6 @@ import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import org.xml.sax.helpers.DefaultHandler
 import java.io.ByteArrayOutputStream
-import java.net.URL
 import javax.xml.parsers.SAXParserFactory
 
 
@@ -30,35 +31,17 @@ class XmlParserInvoice(@Autowired val invoiceHandler: InvoiceHandler, @Autowired
         val workbook = XSSFWorkbook()
         val sheet = workbook.createSheet("DanfeSheet")
 
-        val headerRow = sheet.createRow(0)
-        val headerStyle = workbook.createCellStyle()
-        headerStyle.fillForegroundColor = IndexedColors.LIGHT_BLUE.getIndex()
-        headerStyle.fillPattern = FillPatternType.SOLID_FOREGROUND
-
-        val font = workbook.createFont()
-        font.fontName = "Arial"
-        font.fontHeightInPoints = 16.toShort()
-        font.bold = true
-        headerStyle.setFont(font)
-
-        val headers = getHeaders(files)
-
         log.info("Criando headers para o excel")
 
-        headers.forEachIndexed { index, value ->
-            val headerCell = headerRow.createCell(index)
-            headerCell.setCellValue(value)
-            headerCell.cellStyle = headerStyle
-            sheet.setColumnWidth(index, 6000)
-        }
+        val headers = createHeaders(files, sheet, workbook)
 
         log.info("Headers criados")
 
-        log.info("iniciando processso de parser o xml")
+        log.info("iniciando processso de parser do xml")
 
         files.forEachIndexed{ index, f ->
             saxParser.parse(f.inputStream, invoiceHandler)
-            val map = invoiceHandler.getMapped()
+            val map = invoiceHandler.getInvoiceMap()
             val row = sheet.createRow(index.plus(1))
 
             map.forEach {map ->
@@ -88,7 +71,25 @@ class XmlParserInvoice(@Autowired val invoiceHandler: InvoiceHandler, @Autowired
 
     }
 
-    private fun getHeaders(files: Array<MultipartFile>): List<String?> {
+    private fun createHeaderStyle(workbook : XSSFWorkbook) : XSSFCellStyle {
+        val headerStyle = workbook.createCellStyle()
+        headerStyle.fillForegroundColor = IndexedColors.LIGHT_BLUE.getIndex()
+        headerStyle.fillPattern = FillPatternType.SOLID_FOREGROUND
+
+        val font = workbook.createFont()
+        font.fontName = "Arial"
+        font.fontHeightInPoints = 16.toShort()
+        font.bold = true
+        headerStyle.setFont(font)
+
+        return headerStyle
+    }
+
+    private fun createHeaders(files: Array<MultipartFile>, sheet : XSSFSheet, workbook: XSSFWorkbook): List<String?> {
+
+        val headerRow = sheet.createRow(0)
+
+        val headerStyle = createHeaderStyle(workbook)
 
         log.info("Juntando todos os headers unicos")
 
@@ -100,7 +101,16 @@ class XmlParserInvoice(@Autowired val invoiceHandler: InvoiceHandler, @Autowired
             saxParser.parse(f.inputStream, invoiceHandler)
         }
 
-        return invoiceHandler.getUniqueValues()
+        val headers = invoiceHandler.getUniqueValues()
+
+        headers.forEachIndexed { index, value ->
+            val headerCell = headerRow.createCell(index)
+            headerCell.setCellValue(value)
+            headerCell.cellStyle = headerStyle
+            sheet.setColumnWidth(index, 6000)
+        }
+
+        return headers
     }
 
 }

@@ -2,6 +2,6 @@ steps:
   - name: 'gcr.io/cloud-builders/mvn'
     args: ['install']
   - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'build', '-t', 'gcr.io/instaltec/quickstart-image', '.' ]
+    args: [ 'build', '-t', 'gcr.io/instaltec-263206/xml-parser', '.' ]
 images:
-  - 'gcr.io/instaltec/quickstart-image'
+  - 'gcr.io/instaltec-263206/xml-parser'

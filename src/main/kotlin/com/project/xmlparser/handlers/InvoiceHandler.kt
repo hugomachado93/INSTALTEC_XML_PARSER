@@ -3,19 +3,14 @@ package com.project.xmlparser.handlers
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import org.xml.sax.Attributes
+import org.xml.sax.ContentHandler
+import org.xml.sax.Locator
 import org.xml.sax.helpers.DefaultHandler
 
 @Component
-class InvoiceHandler : DefaultHandler() {
+class InvoiceHandler : InvoiceParser(){
 
     val log = LoggerFactory.getLogger(InvoiceHandler::class.java)
-
-    private var currentName: String? = null
-    private var map = mutableMapOf<String?, String>()
-    private var prodName = false
-    private var value = ""
-    private var uniqueValue = mutableListOf<String?>()
-    private var uniqueProdValues = mutableListOf<String?>()
 
     override fun startElement(uri: String?, localName: String?, qName: String?, atribute: Attributes?) {
 
@@ -50,7 +45,6 @@ class InvoiceHandler : DefaultHandler() {
 
     }
 
-
     override fun characters(ch: CharArray, start: Int, length: Int) {
         val string = String(ch, start, length)
 
@@ -63,6 +57,10 @@ class InvoiceHandler : DefaultHandler() {
         }
     }
 
+    override fun endDocument() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun endElement(uri: String?, localName: String?, qName: String?) {
 
         when(qName){
@@ -73,25 +71,4 @@ class InvoiceHandler : DefaultHandler() {
         }
 
     }
-
-    fun getMapped() : MutableMap<String?, String> {
-        return map
-    }
-
-    fun clearInvoiceMap() {
-        map.clear()
-    }
-
-    fun getUniqueValues() : List<String?> {
-
-        val uniqueValues = uniqueProdValues.distinct().sortedBy { it?.substringAfter("|")?.toInt() }
-
-        return uniqueValue.distinct() + uniqueValues
-    }
-
-    fun clearUniqueValues() {
-        uniqueProdValues.clear()
-        uniqueValue.clear()
-    }
-
 }

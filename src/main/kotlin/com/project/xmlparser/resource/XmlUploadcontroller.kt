@@ -1,25 +1,14 @@
 package com.project.xmlparser.resource
 
-import com.google.cloud.storage.BlobId
-import com.google.cloud.storage.Storage
-import com.project.xmlparser.entity.UploadFileResponse
+import com.project.xmlparser.dto.UploadFileResponse
 import com.project.xmlparser.services.XmlParserInvoice
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.core.io.InputStreamResource
-import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder
-import java.io.File
-import java.io.FileInputStream
-import java.io.IOException
-import java.net.URL
 import java.util.concurrent.TimeUnit
-import javax.servlet.http.HttpServletRequest
 import kotlin.system.measureTimeMillis
 
 
