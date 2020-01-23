@@ -15,7 +15,7 @@
     <description>xml parser application</description>
 
     <properties>
-        <spring-cloud-gcp.version>1.1.3.RELEASE</spring-cloud-gcp.version>
+        <spring-cloud-gcp.version>1.2.1.RELEASE</spring-cloud-gcp.version>
         <java.version>11</java.version>
         <kotlin.version>1.3.50</kotlin.version>
     </properties>

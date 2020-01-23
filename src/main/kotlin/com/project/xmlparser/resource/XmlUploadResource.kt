@@ -17,9 +17,9 @@ val listaParam = listOf(
 )
 
 @RestController
-class XmlUploadcontroller(@Autowired val xmlParserInvoice: XmlParserInvoice) {
+class XmlUploadResource(@Autowired val xmlParserInvoice: XmlParserInvoice) {
 
-    val log = LoggerFactory.getLogger(XmlUploadcontroller::class.java)
+    val log = LoggerFactory.getLogger(XmlUploadResource::class.java)
 
     @PostMapping("/upload")
     fun uploadXmlFile(@RequestParam("files") files: Array<MultipartFile>, @RequestParam("type") type: String): ResponseEntity<UploadFileResponse> {
