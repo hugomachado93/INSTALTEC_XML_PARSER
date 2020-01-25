@@ -57,10 +57,6 @@ class InvoiceHandler : InvoiceParser(){
         }
     }
 
-    override fun endDocument() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     override fun endElement(uri: String?, localName: String?, qName: String?) {
 
         when(qName){
