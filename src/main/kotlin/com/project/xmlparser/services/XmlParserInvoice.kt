@@ -2,9 +2,11 @@ package com.project.xmlparser.services
 
 import com.project.xmlparser.dto.UploadFileResponse
 import com.project.xmlparser.handlers.InvoiceHandler
+import com.project.xmlparser.repository.CloudStorage
 import org.apache.poi.ss.usermodel.FillPatternType
 import org.apache.poi.ss.usermodel.IndexedColors
 import org.apache.poi.ss.util.CellRangeAddress
+import org.apache.poi.xssf.usermodel.XSSFCell
 import org.apache.poi.xssf.usermodel.XSSFCellStyle
 import org.apache.poi.xssf.usermodel.XSSFSheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
@@ -22,45 +24,26 @@ class XmlParserInvoice(@Autowired val invoiceHandler: InvoiceHandler, @Autowired
 
     val log = LoggerFactory.getLogger(XmlParserInvoice::class.java)
 
-    fun createDocument(lista: List<String>, files: Array<MultipartFile>) : UploadFileResponse {
+    fun createDocument(listOfAllowedParams: List<String?>, files: Array<MultipartFile>) : UploadFileResponse {
 
         val factory = SAXParserFactory.newInstance()
         factory.isNamespaceAware = true
-        val saxParser = factory.newSAXParser()
 
         val workbook = XSSFWorkbook()
         val sheet = workbook.createSheet("DanfeSheet")
 
         log.info("Criando headers para o excel")
 
-        val headers = createHeaders(files, sheet, workbook)
+        val headers = createHeaders(files,workbook,sheet,listOfAllowedParams)
 
         log.info("Headers criados")
 
         log.info("iniciando processso de parser do xml")
 
-        files.forEachIndexed{ index, f ->
-            saxParser.parse(f.inputStream, invoiceHandler)
-            val map = invoiceHandler.getInvoiceMap()
-            val row = sheet.createRow(index.plus(1))
-
-            map.forEach {map ->
-                val index = headers.indexOf(map.key)
-                val cell = row.createCell(index)
-                cell.setCellValue(map.value)
-                log.info("Cria celula no indice $index com valor: ${map.value}")
-            }
-
-            invoiceHandler.clearInvoiceMap()
-            invoiceHandler.clearUniqueValues()
-
-            map.clear()
-
-        }
+        populateFile(files, headers, sheet)
 
         log.info("Processo de parser finalizado")
 
-        sheet.setAutoFilter(CellRangeAddress(sheet.firstRowNum, sheet.lastRowNum, 0, sheet.getRow(0).physicalNumberOfCells))
         val byteArrayOutputStream = ByteArrayOutputStream()
         workbook.write(byteArrayOutputStream)
         workbook.close()
@@ -85,7 +68,7 @@ class XmlParserInvoice(@Autowired val invoiceHandler: InvoiceHandler, @Autowired
         return headerStyle
     }
 
-    private fun createHeaders(files: Array<MultipartFile>, sheet : XSSFSheet, workbook: XSSFWorkbook): List<String?> {
+    private fun createHeaders(files: Array<MultipartFile>, workbook: XSSFWorkbook, sheet : XSSFSheet, listOfAllowedParams: List<String?>): List<String?> {
 
         val headerRow = sheet.createRow(0)
 
@@ -101,7 +84,7 @@ class XmlParserInvoice(@Autowired val invoiceHandler: InvoiceHandler, @Autowired
             saxParser.parse(f.inputStream, invoiceHandler)
         }
 
-        val headers = invoiceHandler.getUniqueValues()
+        val headers = invoiceHandler.getUniqueValues(listOfAllowedParams)
 
         headers.forEachIndexed { index, value ->
             val headerCell = headerRow.createCell(index)
@@ -110,7 +93,37 @@ class XmlParserInvoice(@Autowired val invoiceHandler: InvoiceHandler, @Autowired
             sheet.setColumnWidth(index, 6000)
         }
 
+        sheet.setAutoFilter(CellRangeAddress(sheet.firstRowNum, sheet.lastRowNum, 0, sheet.getRow(0).physicalNumberOfCells))
+
         return headers
+    }
+
+    private fun populateFile(files: Array<MultipartFile>, headers: List<String?>, sheet : XSSFSheet) {
+        val factory = SAXParserFactory.newInstance()
+        factory.isNamespaceAware = true
+        val saxParser = factory.newSAXParser()
+
+        files.forEachIndexed{ index, f ->
+            saxParser.parse(f.inputStream, invoiceHandler)
+            val map = invoiceHandler.getInvoiceMap()
+            val row = sheet.createRow(index.plus(1))
+
+            map.forEach {map ->
+                val index = headers.indexOf(map.key)
+
+                if(index != -1) {
+                    val cell = row.createCell(index)
+                    cell.setCellValue(map.value)
+                    log.info("Cria celula no indice $index com valor: ${map.value}")
+                }
+            }
+
+            invoiceHandler.clearInvoiceMap()
+            invoiceHandler.clearUniqueValues()
+
+            map.clear()
+
+        }
     }
 
 }

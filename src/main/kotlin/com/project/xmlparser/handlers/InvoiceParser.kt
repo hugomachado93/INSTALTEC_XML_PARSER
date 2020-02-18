@@ -19,11 +19,19 @@ open class InvoiceParser : DefaultHandler() {
         map.clear()
     }
 
-    fun getUniqueValues() : List<String?> {
+    fun getUniqueValues(listOfAllowedParams: List<String?>) : List<String?> {
 
-        val uniqueValues = uniqueProdValues.distinct().sortedBy { it?.substringAfter("|")?.toInt() }
+        val uniqueValues = uniqueProdValues
+                .distinct()
+                .sortedBy { it?.substringAfter("|")?.toInt() }
 
-        return uniqueValue.distinct() + uniqueValues
+        var concatenatedValues = uniqueValue.distinct() + uniqueValues
+
+        if(listOfAllowedParams.isNotEmpty()){
+            concatenatedValues = concatenatedValues.filter { value -> listOfAllowedParams.contains(value)}
+        }
+
+        return concatenatedValues
     }
 
     fun clearUniqueValues() {

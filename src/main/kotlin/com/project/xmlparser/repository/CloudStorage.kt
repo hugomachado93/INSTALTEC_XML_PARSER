@@ -1,17 +1,19 @@
-package com.project.xmlparser.services
+package com.project.xmlparser.repository
 
 import com.google.cloud.storage.*
 import com.project.xmlparser.dto.UploadFileResponse
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-@Service
+@Component
 class CloudStorage {
 
-    fun saveToDownload(byteArray: ByteArray): UploadFileResponse {
+    private val storage: Storage = StorageOptions.getDefaultInstance().service
 
-        val storage: Storage = StorageOptions.getDefaultInstance().service
+    fun saveToDownload(byteArray: ByteArray): UploadFileResponse {
 
         val bucket = storage.get("instaltec_store")
 

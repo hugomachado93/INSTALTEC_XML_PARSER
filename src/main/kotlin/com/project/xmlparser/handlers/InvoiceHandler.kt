@@ -46,15 +46,17 @@ class InvoiceHandler : InvoiceParser(){
     }
 
     override fun characters(ch: CharArray, start: Int, length: Int) {
+
         val string = String(ch, start, length)
 
         string.takeIf { it.isNotEmpty() }?.let { map[currentName] = it }
 
-        if(prodName) {
+        if (prodName) {
             uniqueProdValues.add(currentName)
         } else {
             uniqueValue.add(currentName)
         }
+
     }
 
     override fun endElement(uri: String?, localName: String?, qName: String?) {

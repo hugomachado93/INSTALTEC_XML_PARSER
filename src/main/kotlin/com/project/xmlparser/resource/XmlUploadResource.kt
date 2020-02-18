@@ -1,5 +1,6 @@
 package com.project.xmlparser.resource
 
+import com.project.xmlparser.dto.MappedParams
 import com.project.xmlparser.dto.UploadFileResponse
 import com.project.xmlparser.services.XmlParserInvoice
 import org.slf4j.LoggerFactory
@@ -12,28 +13,21 @@ import java.util.concurrent.TimeUnit
 import kotlin.system.measureTimeMillis
 
 
-val listaParam = listOf(
-        "all"
-)
-
 @RestController
 class XmlUploadResource(@Autowired val xmlParserInvoice: XmlParserInvoice) {
 
     val log = LoggerFactory.getLogger(XmlUploadResource::class.java)
 
+    @CrossOrigin("http://localhost:3000")
     @PostMapping("/upload")
-    fun uploadXmlFile(@RequestParam("files") files: Array<MultipartFile>, @RequestParam("type") type: String): ResponseEntity<UploadFileResponse> {
+    fun uploadXmlFile(@RequestPart("files") files: Array<MultipartFile>,@RequestPart("listParams") mappedParams: MappedParams, @RequestParam("type") type: String): ResponseEntity<UploadFileResponse> {
         var fileResponse : UploadFileResponse? = null
 
         log.info("Iniciando criacao do arquivo")
 
-        val time = measureTimeMillis {
-            fileResponse = xmlParserInvoice.createDocument(listaParam, files)
-        }
+        fileResponse = xmlParserInvoice.createDocument(mappedParams.listParams, files)
 
-        println(TimeUnit.MILLISECONDS.toSeconds(time))
-
-        log.info("Processo do arquivo ${fileResponse?.fileName} finalizado")
+        log.info("Processo do arquivo ${fileResponse.fileName} finalizado")
 
         return ResponseEntity.status(HttpStatus.OK).body(fileResponse)
     }
