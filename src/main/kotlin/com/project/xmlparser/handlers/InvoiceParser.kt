@@ -28,7 +28,7 @@ open class InvoiceParser : DefaultHandler() {
         var concatenatedValues = uniqueValue.distinct() + uniqueValues
 
         if(listOfAllowedParams.isNotEmpty()){
-            concatenatedValues = concatenatedValues.filter { value -> listOfAllowedParams.contains(value)}
+            concatenatedValues = concatenatedValues.filter { value -> listOfAllowedParams.contains(value) }
         }
 
         return concatenatedValues

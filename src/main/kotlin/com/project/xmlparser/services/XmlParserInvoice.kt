@@ -26,24 +26,33 @@ class XmlParserInvoice(@Autowired val invoiceHandler: InvoiceHandler, @Autowired
 
     fun createDocument(listOfAllowedParams: List<String?>, files: Array<MultipartFile>) : UploadFileResponse {
 
+        val workbook = XSSFWorkbook()
+        val sheetAllowedheader = workbook.createSheet("Danfe Sheet Filtered Headers")
+        val sheetFullHeader = workbook.createSheet("Danfe Sheet All Headers")
+
         val factory = SAXParserFactory.newInstance()
         factory.isNamespaceAware = true
+        val saxParser = factory.newSAXParser()
 
-        val workbook = XSSFWorkbook()
-        val sheet = workbook.createSheet("DanfeSheet")
+        files.forEach { f ->
+            saxParser.parse(f.inputStream, invoiceHandler)
+        }
 
         log.info("Criando headers para o excel")
 
-        val headers = createHeaders(files,workbook,sheet,listOfAllowedParams)
-
-        log.info("Headers criados")
-
+        val allowedHeaders = createHeaders(workbook,sheetAllowedheader,listOfAllowedParams)
         log.info("iniciando processso de parser do xml")
-
-        populateFile(files, headers, sheet)
-
+        populateFile(files, allowedHeaders, sheetAllowedheader)
         log.info("Processo de parser finalizado")
 
+        if(!listOfAllowedParams.isNullOrEmpty()) {
+            val fullHeader = createHeaders(workbook, sheetFullHeader, emptyList())
+            log.info("iniciando processso de parser do xml")
+            populateFile(files, fullHeader, sheetFullHeader)
+            log.info("Processo de parser finalizado")
+        }
+
+        invoiceHandler.clearUniqueValues()
         val byteArrayOutputStream = ByteArrayOutputStream()
         workbook.write(byteArrayOutputStream)
         workbook.close()
@@ -68,21 +77,13 @@ class XmlParserInvoice(@Autowired val invoiceHandler: InvoiceHandler, @Autowired
         return headerStyle
     }
 
-    private fun createHeaders(files: Array<MultipartFile>, workbook: XSSFWorkbook, sheet : XSSFSheet, listOfAllowedParams: List<String?>): List<String?> {
+    private fun createHeaders( workbook: XSSFWorkbook, sheet : XSSFSheet, listOfAllowedParams: List<String?>): List<String?> {
 
         val headerRow = sheet.createRow(0)
 
         val headerStyle = createHeaderStyle(workbook)
 
         log.info("Juntando todos os headers unicos")
-
-        val factory = SAXParserFactory.newInstance()
-        factory.isNamespaceAware = true
-        val saxParser = factory.newSAXParser()
-
-        files.forEach { f ->
-            saxParser.parse(f.inputStream, invoiceHandler)
-        }
 
         val headers = invoiceHandler.getUniqueValues(listOfAllowedParams)
 
@@ -119,10 +120,6 @@ class XmlParserInvoice(@Autowired val invoiceHandler: InvoiceHandler, @Autowired
             }
 
             invoiceHandler.clearInvoiceMap()
-            invoiceHandler.clearUniqueValues()
-
-            map.clear()
-
         }
     }
 
