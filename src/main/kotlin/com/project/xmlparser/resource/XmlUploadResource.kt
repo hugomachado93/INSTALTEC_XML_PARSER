@@ -18,7 +18,6 @@ class XmlUploadResource(@Autowired val xmlParserInvoice: XmlParserInvoice) {
 
     val log = LoggerFactory.getLogger(XmlUploadResource::class.java)
 
-    @CrossOrigin("http://localhost:3000")
     @PostMapping("/upload")
     fun uploadXmlFile(@RequestPart("files") files: Array<MultipartFile>,@RequestPart("listParams") mappedParams: MappedParams, @RequestParam("type") type: String): ResponseEntity<UploadFileResponse> {
         var fileResponse : UploadFileResponse? = null
