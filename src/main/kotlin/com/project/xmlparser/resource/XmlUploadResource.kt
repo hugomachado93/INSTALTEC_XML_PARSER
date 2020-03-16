@@ -19,7 +19,7 @@ class XmlUploadResource(@Autowired val xmlParserInvoice: XmlParserInvoice) {
     val log = LoggerFactory.getLogger(XmlUploadResource::class.java)
 
     @PostMapping("/upload")
-    fun uploadXmlFile(@RequestPart("files") files: Array<MultipartFile>,@RequestPart("listParams") mappedParams: MappedParams, @RequestParam("type") type: String): ResponseEntity<UploadFileResponse> {
+    fun uploadXmlFile(@RequestPart("files") files: Array<MultipartFile>,@RequestPart("mappedParams") mappedParams: MappedParams, @RequestParam("type") type: String): ResponseEntity<UploadFileResponse> {
         var fileResponse : UploadFileResponse? = null
 
         log.info("Iniciando criacao do arquivo")

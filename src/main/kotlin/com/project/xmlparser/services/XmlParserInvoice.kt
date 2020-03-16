@@ -13,19 +13,22 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.web.context.annotation.RequestScope
 import org.springframework.web.multipart.MultipartFile
 import org.xml.sax.helpers.DefaultHandler
 import java.io.ByteArrayOutputStream
 import javax.xml.parsers.SAXParserFactory
 
-
+@RequestScope
 @Service
-class XmlParserInvoice(@Autowired val invoiceHandler: InvoiceHandler, @Autowired val cloudStorage: CloudStorage) : DefaultHandler() {
+class XmlParserInvoice(@Autowired val cloudStorage: CloudStorage) : DefaultHandler() {
 
     val log = LoggerFactory.getLogger(XmlParserInvoice::class.java)
 
-    fun createDocument(listOfAllowedParams: List<String?>, files: Array<MultipartFile>) : UploadFileResponse {
+    val invoiceHandler = InvoiceHandler()
 
+    fun createDocument(listOfAllowedParams: List<String?>, files: Array<MultipartFile>) : UploadFileResponse {
+        invoiceHandler.clearUniqueValues()
         val workbook = XSSFWorkbook()
         val sheetAllowedheader = workbook.createSheet("Danfe Sheet Filtered Headers")
         val sheetFullHeader = workbook.createSheet("Danfe Sheet All Headers")
@@ -52,7 +55,6 @@ class XmlParserInvoice(@Autowired val invoiceHandler: InvoiceHandler, @Autowired
             log.info("Processo de parser finalizado")
         }
 
-        invoiceHandler.clearUniqueValues()
         val byteArrayOutputStream = ByteArrayOutputStream()
         workbook.write(byteArrayOutputStream)
         workbook.close()

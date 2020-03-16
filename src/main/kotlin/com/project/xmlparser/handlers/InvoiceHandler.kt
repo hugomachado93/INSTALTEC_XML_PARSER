@@ -2,6 +2,7 @@ package com.project.xmlparser.handlers
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import org.springframework.web.context.annotation.RequestScope
 import org.xml.sax.Attributes
 import org.xml.sax.ContentHandler
 import org.xml.sax.Locator
