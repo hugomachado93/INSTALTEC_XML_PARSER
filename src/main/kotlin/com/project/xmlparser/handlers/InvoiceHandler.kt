@@ -11,9 +11,6 @@ import org.xml.sax.helpers.DefaultHandler
 @Component
 class InvoiceHandler : InvoiceParser(){
 
-    //TODO Melhorar performance salvando uma lista de mapas para evitar multiplos parsers no arquivo
-    var files = listOf<Map<String, String>>()
-
     val log = LoggerFactory.getLogger(InvoiceHandler::class.java)
 
     override fun startElement(uri: String?, localName: String?, qName: String?, atribute: Attributes?) {

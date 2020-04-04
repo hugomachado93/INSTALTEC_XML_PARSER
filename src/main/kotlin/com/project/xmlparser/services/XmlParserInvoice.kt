@@ -6,7 +6,6 @@ import com.project.xmlparser.repository.CloudStorage
 import org.apache.poi.ss.usermodel.FillPatternType
 import org.apache.poi.ss.usermodel.IndexedColors
 import org.apache.poi.ss.util.CellRangeAddress
-import org.apache.poi.xssf.usermodel.XSSFCell
 import org.apache.poi.xssf.usermodel.XSSFCellStyle
 import org.apache.poi.xssf.usermodel.XSSFSheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
@@ -27,8 +26,9 @@ class XmlParserInvoice(@Autowired val cloudStorage: CloudStorage) : DefaultHandl
 
     val invoiceHandler = InvoiceHandler()
 
+    var filesMap = mutableListOf<MutableMap<String?, String>>()
+
     fun createDocument(listOfAllowedParams: List<String?>, files: Array<MultipartFile>) : UploadFileResponse {
-        invoiceHandler.clearUniqueValues()
         val workbook = XSSFWorkbook()
         val sheetAllowedheader = workbook.createSheet("Danfe Sheet Filtered Headers")
         val sheetFullHeader = workbook.createSheet("Danfe Sheet All Headers")
@@ -39,22 +39,25 @@ class XmlParserInvoice(@Autowired val cloudStorage: CloudStorage) : DefaultHandl
 
         files.forEach { f ->
             saxParser.parse(f.inputStream, invoiceHandler)
+            filesMap.add(invoiceHandler.getInvoiceMap().toMutableMap())
+            invoiceHandler.clearInvoiceMap()
         }
 
         log.info("Criando headers para o excel")
 
         val allowedHeaders = createHeaders(workbook,sheetAllowedheader,listOfAllowedParams)
         log.info("iniciando processso de parser do xml")
-        populateFile(files, allowedHeaders, sheetAllowedheader)
+        populateFile(allowedHeaders, sheetAllowedheader, filesMap)
         log.info("Processo de parser finalizado")
 
         if(!listOfAllowedParams.isNullOrEmpty()) {
             val fullHeader = createHeaders(workbook, sheetFullHeader, emptyList())
             log.info("iniciando processso de parser do xml")
-            populateFile(files, fullHeader, sheetFullHeader)
+            populateFile(fullHeader, sheetFullHeader, filesMap)
             log.info("Processo de parser finalizado")
         }
 
+        invoiceHandler.clearUniqueValues()
         val byteArrayOutputStream = ByteArrayOutputStream()
         workbook.write(byteArrayOutputStream)
         workbook.close()
@@ -101,27 +104,19 @@ class XmlParserInvoice(@Autowired val cloudStorage: CloudStorage) : DefaultHandl
         return headers
     }
 
-    private fun populateFile(files: Array<MultipartFile>, headers: List<String?>, sheet : XSSFSheet) {
-        val factory = SAXParserFactory.newInstance()
-        factory.isNamespaceAware = true
-        val saxParser = factory.newSAXParser()
+    private fun populateFile(headers: List<String?>, sheet: XSSFSheet, filesMap: MutableList<MutableMap<String?, String>>) {
 
-        files.forEachIndexed{ index, f ->
-            saxParser.parse(f.inputStream, invoiceHandler)
-            val map = invoiceHandler.getInvoiceMap()
+        filesMap.forEachIndexed{ index, f ->
             val row = sheet.createRow(index.plus(1))
 
-            map.forEach {map ->
+            f.forEach {map ->
                 val index = headers.indexOf(map.key)
 
                 if(index != -1) {
                     val cell = row.createCell(index)
                     cell.setCellValue(map.value)
-                    log.info("Cria celula no indice $index com valor: ${map.value}")
                 }
             }
-
-            invoiceHandler.clearInvoiceMap()
         }
     }
 
