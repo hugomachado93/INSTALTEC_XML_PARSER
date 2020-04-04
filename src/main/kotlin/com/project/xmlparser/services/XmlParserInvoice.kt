@@ -58,6 +58,7 @@ class XmlParserInvoice(@Autowired val cloudStorage: CloudStorage) : DefaultHandl
         }
 
         invoiceHandler.clearUniqueValues()
+        invoiceHandler.clearInvoiceMap()
         val byteArrayOutputStream = ByteArrayOutputStream()
         workbook.write(byteArrayOutputStream)
         workbook.close()
