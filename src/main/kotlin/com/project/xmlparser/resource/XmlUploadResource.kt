@@ -31,4 +31,9 @@ class XmlUploadResource(@Autowired val xmlParserInvoice: XmlParserInvoice) {
         return ResponseEntity.status(HttpStatus.OK).body(fileResponse)
     }
 
+    @GetMapping("/ping")
+    fun teste() : String{
+        return "pong";
+    }
+
 }
