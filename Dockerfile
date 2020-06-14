@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk11:alpine-slim
+FROM adoptopenjdk/openjdk11-openj9:alpine
 VOLUME /tmp
 ARG JAR_FILE=target/*.jar
 ARG GCP_KEY=gcp-key/*.json
