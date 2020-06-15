@@ -1,8 +1,5 @@
 FROM adoptopenjdk/openjdk11-openj9:alpine
-VOLUME /tmp
-ARG JAR_FILE=target/*.jar
-ARG GCP_KEY=gcp-key/*.json
-COPY ${JAR_FILE} app.jar
-COPY ${GCP_KEY} gcp-key.json
-ENV GOOGLE_APPLICATION_CREDENTIALS gcp-key.json
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-Dserver.port=${PORT}", "-jar","/app.jar"]
+RUN mkdir /opt/shareclasses
+RUN mkdir /opt/app
+COPY target/xmlparser-*.jar /opt/app/app.jar
+CMD ["java", "-Xmx128m", "-XX:+IdleTuningGcOnIdle", "-Xtune:virtualized", "-Xscmx128m", "-Xscmaxaot100m",    "-jar", "/opt/app/app.jar"]
